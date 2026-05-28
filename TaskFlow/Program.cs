@@ -1,11 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
+using TaskFlow.Repositories;
+using TaskFlow.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=taskflow.db"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IWorkTaskRepository, WorkTaskRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
