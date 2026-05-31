@@ -21,14 +21,14 @@ public class WorkTaskService : IWorkTaskService
 
     public async Task<IEnumerable<TaskResponseDto>> GetAllAsync()
     {
-        var tasks = await _unitOfWork.Tasks.GetAllAsync();
+        var tasks = await _unitOfWork.Tasks.GetAllWithDetailsAsync();
         
         return _mapper.Map<IEnumerable<TaskResponseDto>>(tasks);
     }
 
     public async Task<TaskResponseDto?> GetByIdAsync(int id)
     {
-        var task = await _unitOfWork.Tasks.GetByIdAsync(id);
+        var task = await _unitOfWork.Tasks.GetByIdWithDetailsAsync(id);
         if (task == null)
             throw new NotFoundException($"Task with id {id} not found");
         
@@ -118,8 +118,9 @@ public class WorkTaskService : IWorkTaskService
             AssignedAt = DateTime.UtcNow
         };
 
+        await _unitOfWork.UserTasks.AddAsync(userTask);
         await _unitOfWork.SaveChangesAsync();
-        
+    
         return true;
     }
 

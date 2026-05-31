@@ -1,4 +1,5 @@
 using TaskFlow.Data;
+using TaskFlow.Models;
 using TaskFlow.Repositories.Interfaces;
 
 namespace TaskFlow.Repositories;
@@ -11,18 +12,22 @@ public class UnitOfWork : IUnitOfWork
     public IProjectRepository Projects { get; }
     public IWorkTaskRepository Tasks { get; }
     public ICommentRepository Comments { get; }
+    public IGenericRepository<UserTask> UserTasks { get; }
+
 
     public UnitOfWork(AppDbContext context,
         IUserRepository users,
         IProjectRepository projects,
         IWorkTaskRepository tasks,
-        ICommentRepository comments)
+        ICommentRepository comments,
+        IGenericRepository<UserTask> userTasks)
     {
         _context = context;
         Users = users;
         Projects = projects;
         Tasks = tasks;
         Comments = comments;
+        UserTasks = userTasks;
     }
 
     public async Task<int> SaveChangesAsync()

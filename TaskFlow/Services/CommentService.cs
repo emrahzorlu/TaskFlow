@@ -20,10 +20,9 @@ public class CommentService : ICommentService
 
     public async Task<IEnumerable<CommentResponseDto>> GetByTaskIdAsync(int taskId)
     {
-        var comments = await _unitOfWork.Comments.GetAllAsync();
-        var taskComments = comments.Where(c => c.TaskId == taskId);
+        var comments = await _unitOfWork.Comments.GetByTaskIdWithDetailsAsync(taskId);
         
-        return _mapper.Map<IEnumerable<CommentResponseDto>>(taskComments);
+        return _mapper.Map<IEnumerable<CommentResponseDto>>(comments);
     }
 
     public async Task<CommentResponseDto> CreateAsync(CreateCommentDto dto, int userId)

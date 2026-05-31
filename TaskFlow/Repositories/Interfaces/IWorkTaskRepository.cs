@@ -5,5 +5,6 @@ namespace TaskFlow.Repositories.Interfaces;
 
 public interface IWorkTaskRepository : IGenericRepository<WorkTask>
 {
-    
+    Task<IEnumerable<WorkTask>> GetAllWithDetailsAsync();
+    Task<WorkTask?> GetByIdWithDetailsAsync(int id);
 }

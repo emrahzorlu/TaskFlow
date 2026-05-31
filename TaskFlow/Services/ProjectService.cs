@@ -20,14 +20,14 @@ public class ProjectService : IProjectService
 
     public async Task<IEnumerable<ProjectResponseDto>> GetAllAsync()
     {
-        var projects = await _unitOfWork.Projects.GetAllAsync();
+        var projects = await _unitOfWork.Projects.GetAllWithDetailsAsync();
         
         return _mapper.Map<IEnumerable<ProjectResponseDto>>(projects);
     }
 
     public async Task<ProjectResponseDto?> GetByIdAsync(int id)
     {
-        var project = await _unitOfWork.Projects.GetByIdAsync(id);
+        var project = await _unitOfWork.Projects.GetByIdWithDetailsAsync(id);
         if (project == null)
             throw new NotFoundException($"Project with id {id} not found");
         

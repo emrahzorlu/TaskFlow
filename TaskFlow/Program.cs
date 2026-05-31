@@ -9,6 +9,7 @@ using System.Text;
 using TaskFlow.Services;
 using TaskFlow.Services.Interfaces;
 using TaskFlow.Middleware;
+using TaskFlow.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IWorkTaskService, WorkTaskService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IGenericRepository<UserTask>, GenericRepository<UserTask>>();
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAuthentication(options =>
     {
@@ -58,4 +61,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    
+    await DbSeeder.SeedAsync(context);
+}
+
 app.Run();

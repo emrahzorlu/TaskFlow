@@ -1,3 +1,5 @@
+using TaskFlow.Models;
+
 namespace TaskFlow.Repositories.Interfaces;
 
 public interface IUnitOfWork : IDisposable
@@ -6,6 +8,7 @@ public interface IUnitOfWork : IDisposable
     IProjectRepository Projects { get; }
     IWorkTaskRepository Tasks { get; }
     ICommentRepository Comments { get; }
+    IGenericRepository<UserTask> UserTasks { get; }
 
     Task<int> SaveChangesAsync();
 }
